@@ -212,6 +212,7 @@ node .\tests\converter.test.js
 ## 文件说明
 
 - `index.html`：Netlify 静态页面入口。
+- `favicon.svg`：网站图标。
 - `styles.css`：页面样式。
 - `converter.js`：Gemini Markdown 转换核心逻辑。
 - `app.js`：网页交互、文件读取、复制和下载逻辑。

@@ -34,12 +34,24 @@
     const result = [];
     let inFence = false;
     let fenceMarker = "";
+    let trimLeadingBlanks = false;
 
     for (const line of lines) {
       const body = lineBody(line);
       const stripped = body.trim();
 
       if (inFence) {
+        if (trimLeadingBlanks) {
+          if (stripped === "") {
+            continue;
+          }
+          trimLeadingBlanks = false;
+        }
+        if (stripped.startsWith(fenceMarker) && /^`+$/.test(stripped)) {
+          while (result.length > 0 && lineBody(result[result.length - 1]).trim() === "") {
+            result.pop();
+          }
+        }
         result.push(line);
         if (stripped.startsWith(fenceMarker) && /^`+$/.test(stripped)) {
           inFence = false;
@@ -62,6 +74,7 @@
             result.push(`${emptyFence.indent}${emptyFence.fence}${language}${lineEnding(line)}`);
             inFence = true;
             fenceMarker = emptyFence.fence;
+            trimLeadingBlanks = true;
             continue;
           }
 

@@ -183,6 +183,35 @@ textarea {
   font-size: 13px;
 }
 
+.toast {
+  position: fixed;
+  left: 50%;
+  bottom: 24px;
+  z-index: 20;
+  max-width: min(420px, calc(100vw - 32px));
+  min-height: 44px;
+  padding: 12px 16px;
+  border-radius: 8px;
+  background: var(--accent);
+  color: white;
+  box-shadow: 0 12px 28px rgba(23, 32, 42, 0.22);
+  font-size: 14px;
+  line-height: 1.45;
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, 14px);
+  transition: opacity 160ms ease, transform 160ms ease;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translate(-50%, 0);
+}
+
+.toast.error {
+  background: #a43f3f;
+}
+
 @media (max-width: 820px) {
   .page-head {
     align-items: stretch;
@@ -205,5 +234,9 @@ textarea {
   .file-name {
     overflow-wrap: anywhere;
     white-space: normal;
+  }
+
+  .toast {
+    bottom: 16px;
   }
 }

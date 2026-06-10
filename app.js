@@ -11,11 +11,24 @@ const folderInput = document.querySelector("#folderInput");
 const fileSummary = document.querySelector("#fileSummary");
 const fileList = document.querySelector("#fileList");
 const statusText = document.querySelector("#statusText");
+const toast = document.querySelector("#toast");
 
 const { convertMarkdown } = window.GeminiMarkdownConverter;
+let toastTimer = null;
 
 function setStatus(message) {
   statusText.textContent = message;
+}
+
+function showToast(message, type = "success") {
+  toast.textContent = message;
+  toast.classList.toggle("error", type === "error");
+  toast.classList.add("show");
+
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => {
+    toast.classList.remove("show");
+  }, 1800);
 }
 
 function refresh() {
@@ -66,6 +79,7 @@ async function processFiles(fileSource) {
 
   if (!markdownFiles.length) {
     setStatus("未读取到 Markdown 文件");
+    showToast("没有读取到 Markdown 文件", "error");
     return;
   }
 
@@ -100,13 +114,17 @@ async function processFiles(fileSource) {
       downloadBtn.disabled = false;
       downloadBtn.addEventListener("click", () => {
         downloadText(downloadName(file), converted);
+        showToast(`已下载：${downloadName(file)}`);
       });
     } catch (error) {
       state.textContent = "读取失败";
+      showToast(`读取失败：${file.name}`, "error");
     }
   }
 
-  setStatus(`文件处理完成：${markdownFiles.length} 个文件，${changedCount} 个有变化`);
+  const message = `文件处理完成：${markdownFiles.length} 个文件，${changedCount} 个有变化`;
+  setStatus(message);
+  showToast(message);
 }
 
 async function copyOutput() {
@@ -114,10 +132,12 @@ async function copyOutput() {
     await navigator.clipboard.writeText(output.value);
     copyBtn.textContent = "已复制";
     setStatus("结果已复制到剪贴板");
+    showToast("转换结果已复制");
   } catch (error) {
     output.focus();
     output.select();
     setStatus("浏览器未允许自动复制，已选中结果文本");
+    showToast("浏览器未允许自动复制，已选中结果文本", "error");
   }
 
   setTimeout(() => {
@@ -137,6 +157,7 @@ clearBtn.addEventListener("click", () => {
   fileList.replaceChildren();
   fileSummary.textContent = "未选择文件";
   refresh();
+  showToast("内容已清空");
   input.focus();
 });
 copyBtn.addEventListener("click", copyOutput);

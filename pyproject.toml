@@ -1,0 +1,16 @@
+[project]
+name = "markdown-fence-converter"
+version = "0.1.0"
+description = "Fix Markdown code fences whose language is placed on the previous line."
+readme = "README.md"
+requires-python = ">=3.9"
+dependencies = []
+
+[dependency-groups]
+dev = [
+    "pyinstaller>=6.20.0",
+]
+
+[[tool.uv.index]]
+url = "https://mirrors.tuna.tsinghua.edu.cn/pypi/web/simple/"
+default = true

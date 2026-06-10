@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Fix Markdown code fences whose language is placed on the previous line."""
+"""Convert Markdown copied from Gemini into correctly fenced code blocks."""
 
 from __future__ import annotations
 
@@ -53,7 +53,7 @@ def _language_candidate(line: str) -> str | None:
 
 
 def convert_markdown(text: str) -> str:
-    """Move standalone language labels onto following empty code fences."""
+    """Fix Gemini-style language labels placed before empty code fences."""
     lines = _split_lines(text)
     output: list[str] = []
     in_fence = False
@@ -122,7 +122,10 @@ def iter_markdown_files(path: Path) -> list[Path]:
 
 def main() -> int:
     parser = argparse.ArgumentParser(
-        description="Convert Markdown from 'Bash\\n\\n```' to '```Bash'."
+        description=(
+            "Convert Markdown copied from Gemini by moving standalone "
+            "language labels onto the following code fence."
+        )
     )
     parser.add_argument("path", nargs="?", help="Markdown file or folder path.")
     parser.add_argument(
@@ -155,7 +158,7 @@ def main() -> int:
 
 
 def interactive_main() -> int:
-    print("Markdown code fence converter")
+    print("Gemini copied Markdown converter")
     print("Input a Markdown file path or folder path, then press Enter.")
     print("Leave it empty to exit.")
     print()

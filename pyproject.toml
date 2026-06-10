@@ -1,7 +1,7 @@
 [project]
-name = "markdown-fence-converter"
+name = "gemini-markdown-converter"
 version = "0.1.0"
-description = "Fix Markdown code fences whose language is placed on the previous line."
+description = "Convert Markdown copied from Gemini into correctly fenced code blocks."
 readme = "README.md"
 requires-python = ">=3.9"
 dependencies = []
